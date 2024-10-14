@@ -1,0 +1,40 @@
+-- Eliminar la base de datos si ya existe
+DROP DATABASE IF EXISTS `BibliotecaJoseHPorto`;
+
+-- Crear la base de datos
+CREATE DATABASE `BibliotecaJoseHPorto`;
+
+-- Usar la base de datos recién creada
+USE `BibliotecaJoseHPorto`;
+
+-- Eliminar la tabla `socios` si ya existe
+DROP TABLE IF EXISTS `socios`;
+
+-- Crear la tabla `socios`
+CREATE TABLE `socios` (
+  `id_socio` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(24) NOT NULL,
+  `DNI` VARCHAR(11),
+  `telefono` VARCHAR(11),
+  `Fecha de ultimo pago` VARCHAR(11) NOT NULL,
+  PRIMARY KEY (`id_socio`)
+);
+
+-- Eliminar la tabla `prestamos` si ya existe
+DROP TABLE IF EXISTS `prestamos`;
+
+-- Crear la tabla `prestamos`
+CREATE TABLE `prestamos` (
+  `id_prestamos` INT NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(45) NOT NULL,
+  `edicion` VARCHAR(45) NOT NULL,
+  `editorial` VARCHAR(45) NOT NULL,
+  `autor` VARCHAR(45) NOT NULL,
+  `fecha` VARCHAR(45) NOT NULL,
+  `cantidad` INT (2)  NOT NULL, 
+  `id_socio` INT NOT NULL,  -- Relación con la tabla socios
+  PRIMARY KEY (`id_prestamos`),
+  FOREIGN KEY (`id_socio`) REFERENCES socios(`id_socio`)
+);
+show columns from socios
