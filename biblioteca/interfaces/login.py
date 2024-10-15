@@ -4,29 +4,54 @@ from tkinter import messagebox
 def login_interface():
     root = tk.Tk()
     root.title("Iniciar Sesión - Biblioteca José H. Porto")
-    root.geometry("400x300")
+    root.geometry("1366x768")
 
-    tk.Label(root, text="Iniciar Sesión", font=("Arial", 16)).pack(pady=10)
+    # Desactivar la opción de redimensionar la ventana
+    root.resizable(False, False)
 
-    tk.Label(root, text="Usuario:").pack(pady=5)
-    user_entry = tk.Entry(root)
+    # Etiqueta de título
+    tk.Label(root, text="Iniciar Sesión", font=("Arial", 24)).pack(pady=30)
+
+    # Campo de usuario
+    tk.Label(root, text="Usuario:", font=("Arial", 14)).pack(pady=10)
+    user_entry = tk.Entry(root, font=("Arial", 12))
     user_entry.pack()
 
-    tk.Label(root, text="Contraseña:").pack(pady=5)
-    pass_entry = tk.Entry(root, show="*")
+    # Campo de contraseña
+    tk.Label(root, text="Contraseña:", font=("Arial", 14)).pack(pady=10)
+    pass_entry = tk.Entry(root, show="*", font=("Arial", 12))
     pass_entry.pack()
 
+    # Mostrar/ocultar contraseña
+    show_pass_var = tk.IntVar()
+    def toggle_password():
+        if show_pass_var.get():
+            pass_entry.config(show="")
+        else:
+            pass_entry.config(show="*")
+
+    tk.Checkbutton(root, text="Mostrar contraseña", variable=show_pass_var, command=toggle_password).pack(pady=10)
+
+    # Función de inicio de sesión
     def iniciar_sesion():
         user = user_entry.get()
         password = pass_entry.get()
+
+        # Validación de campos vacíos
+        if not user or not password:
+            messagebox.showwarning("Advertencia", "Por favor, completa todos los campos")
+            return
+        
         # Lógica para verificar usuario y contraseña
         if user == "admin" and password == "1234":
             messagebox.showinfo("Login", "Inicio de sesión exitoso")
+            root.destroy()  # Cerrar la ventana actual si el login es exitoso
         else:
             messagebox.showerror("Error", "Usuario o contraseña incorrectos")
 
-    tk.Button(root, text="Iniciar Sesión", command=iniciar_sesion).pack(pady=10)
-    tk.Button(root, text="Registrarse", command=lambda: messagebox.showinfo("Registro", "Ir a la pantalla de registro")).pack(pady=5)
+    # Botón para iniciar sesión
+    tk.Button(root, text="Iniciar Sesión", font=("Arial", 14), command=iniciar_sesion).pack(pady=20)
+
     root.mainloop()
 
 if __name__ == "__main__":
