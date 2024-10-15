@@ -12,49 +12,81 @@ DROP TABLE IF EXISTS `socios`;
 
 -- Crear la tabla `socios`
 CREATE TABLE `socios`(
-  `id_socio` INT NOT NULL AUTO_INCREMENT,
+  `id_socios` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(24) NOT NULL,
   `DNI` VARCHAR(11),
   `telefono` VARCHAR(11),
   `fecha_ultimo_pago` VARCHAR(11) NOT NULL,
-  PRIMARY KEY (`id_socio`)
+  PRIMARY KEY (`id_socios`)
 );
 
+-- Crear la tabla de autor
+CREATE TABLE `autor`(
+  `id_autor` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(24) NOT NULL,
+  PRIMARY KEY (`id_autor`)
+);
+
+-- Crear tabla `editorial`
+DROP TABLE IF EXISTS `editorial`;
+
+CREATE TABLE `editorial`(
+  `id_editorial` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_editorial`)
+);
+
+-- Crear tabla categoria
+
+CREATE TABLE `categoria`(
+  `id_categoria` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `id_subcategoria` INT NOT NULL,
+  PRIMARY KEY (`id_categoria`),
+  FOREIGN KEY (`id_subcategoria`) REFERENCES subcategoria(`id_subcategoria`)
+);
+
+-- Crear tabla subcategoria
+
+CREATE TABLE `subcategoria`(
+  `id_subcategoria` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(24) NOT NULL,
+  PRIMARY KEY (`id_subcategoria`)
+);
 -- Crear la tabla `libros`
-CREATE TABLE `Libros`(
+DROP TABLE IF EXISTS `libros`;
+CREATE TABLE `libros` (
   `id_libros` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(45) NOT NULL,
-  `Autor` VARCHAR(24) NOT NULL,
-  `ISBN` VARCHAR(11),
-  `Editorial` VARCHAR(11),
-  `Num Ejemplar` INT NOT NULL,
-  `Estado Libro` VARCHAR(11) NOT NULL,
- PRIMARY KEY (`id_Libros`)
+  `isbn` VARCHAR(13),
+  `num_ejemplar` INT NOT NULL,
+  `estado_libro` VARCHAR(11) NOT NULL,
+  `id_categoria` INT NOT NULL,
+  `id_editorial` INT NOT NULL,
+  `id_autor` INT NOT NULL,
+  PRIMARY KEY (`id_libros`),
+  FOREIGN KEY (`id_editorial`) REFERENCES editorial(`id_editorial`),
+  FOREIGN KEY (`id_autor`) REFERENCES autor(`id_autor`),
+  FOREIGN KEY (`id_categoria`)REFERENCES categoria(`id_categoria`)
 );
+
 -- Eliminar la tabla `prestamos` si ya existe
 DROP TABLE IF EXISTS `Prestamos`;
 
 -- Crear la tabla `prestamos`
 CREATE TABLE `prestamos` (
   `id_prestamos` INT NOT NULL AUTO_INCREMENT,
-  `fecha prestamo` VARCHAR(45) NOT NULL,
-  `fecha devolucion` VARCHAR(45) NOT NULL,
-  `estado de prestamo` VARCHAR(45) NOT NULL,
-  `id_socio` INT NOT NULL,  -- Relación con la tabla socios
+  `fecha_prestamo` VARCHAR(45) NOT NULL,
+  `fecha_devolucion` VARCHAR(45) NOT NULL,
+  `estado_prestamo` VARCHAR(45) NOT NULL,
+  `id_socios` INT NOT NULL,  -- Relación con la tabla socios
+  `id_libros` INT NOT NULL,
   PRIMARY KEY (`id_prestamos`),
-  FOREIGN KEY (`id_socio`) REFERENCES socios(`id_socio`)
-);
-
-DROP TABLE IF EXISTS `administrador`;
--- Crear la tabla `administrador`
-CREATE TABLE `administrador` (
-  `id_admnistrador` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  `apellido` VARCHAR(24) NOT NULL,
-  `DNI` VARCHAR(11),
-  `telefono` VARCHAR(11),
-  PRIMARY KEY (`id_admnistrador`)
+  FOREIGN KEY (`id_socios`) REFERENCES socios(`id_socios`),
+  FOREIGN KEY (`id_libros`) REFERENCES libros(`id_libros`)
 );
 
 DROP TABLE IF EXISTS `bibliotecaria`;
@@ -62,13 +94,25 @@ CREATE TABLE `bibliotecaria` (
   `id_bibliotecaria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(45) NOT NULL,
-  `DNI` VARCHAR(45) NOT NULL,
+  `dni` VARCHAR(45) NOT NULL,
   `telefono` VARCHAR(45) NOT NULL,
   `direccion` VARCHAR(45) NOT NULL,
   `legajo` INT (2)  NOT NULL, 
-  `id_administrador` INT NOT NULL,  -- Relación con la tabla socios
-  PRIMARY KEY (`id_administrador`),
-  FOREIGN KEY (`id_bibiliotecaria`) REFERENCES bibliotecaria(`id_administrador`)
+  PRIMARY KEY (`id_bibliotecaria`)
   );
 
+DROP TABLE IF EXISTS `administrador`;
+-- Crear la tabla `administrador`
+CREATE TABLE `administrador` (
+  `id_admnistrador` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(24) NOT NULL,
+  `dni` VARCHAR(11),
+  `telefono` VARCHAR(11),
+  `id_bibliotecaria` INT NOT NULL,
+  PRIMARY KEY (`id_admnistrador`)
+);
+
+
+SHOW TABLES;
 show columns from prestamos
