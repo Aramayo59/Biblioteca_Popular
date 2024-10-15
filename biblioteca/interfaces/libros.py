@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 
 def libros_interface():
+    
     root = tk.Tk()
     root.title("Gestión de Libros - Biblioteca José H. Porto")
-    root.geometry("400x400")
-
+    root.geometry("1366x768")
     tk.Label(root, text="Gestión de Libros", font=("Arial", 16)).pack(pady=10)
 
     tk.Label(root, text="Título:").pack(pady=5)
