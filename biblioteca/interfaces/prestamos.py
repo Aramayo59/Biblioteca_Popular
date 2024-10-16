@@ -43,7 +43,7 @@ def prestamos_interface():
             messagebox.showwarning("Error", "Todos los campos son obligatorios")
         else:
             # Aquí iría la lógica para registrar el préstamo en la base de datos
-            messagebox.showinfo("Préstamo", f"Préstamo de '{libro}' registrado exitosamente")
+            messagebox.showinfo("Préstamo", "Préstamo de '" + libro + "' registrado exitosamente")
 
     # Función para limpiar los campos y permitir un nuevo préstamo
     def nuevo_prestamo():
