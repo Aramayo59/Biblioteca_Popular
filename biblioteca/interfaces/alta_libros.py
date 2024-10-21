@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -18,6 +19,13 @@ def actualizar_subcategorias(event):
     subcategoria_var.set('')  # Reiniciar selección de subcategoría
     desplegable_subcategoria.grid(row=5, column=1, padx=10, pady=5)  # Mostrar subcategoría después de seleccionar una categoría
 
+# Función para validar que el campo Editorial no contenga números
+def validar_editorial(editorial):
+    if any(char.isdigit() for char in editorial):
+        messagebox.showwarning("Campo inválido", "El campo 'Editorial' no puede contener números.")
+        return False
+    return True
+
 # Función para agregar un libro a la tabla
 def agregar_libro():
     titulo = entrada_titulo.get()
@@ -31,6 +39,10 @@ def agregar_libro():
     # Validación de campos
     if not (titulo, autor, editorial, categoria, subcategoria, descripcion, isbn):
         messagebox.showwarning("Campos incompletos", "Por favor, completa todos los campos antes de agregar un libro.")
+        return
+
+    # Validar que el campo editorial no contenga números
+    if not validar_editorial(editorial):
         return
     
     tabla_libros.insert("", "end", values=(isbn, titulo, categoria, subcategoria, autor, editorial, descripcion))
@@ -46,6 +58,17 @@ def limpiar_campos():
     categoria_var.set('')
     subcategoria_var.set('')
     desplegable_subcategoria.grid_forget()  # Ocultar el campo de subcategoría hasta que se seleccione una categoría
+
+# Función para eliminar un libro seleccionado de la tabla
+def eliminar_libro():
+    seleccionado = tabla_libros.selection()
+    if seleccionado:
+        confirmacion = messagebox.askyesno("Eliminar libro", "¿Estás seguro de que deseas eliminar el libro seleccionado?")
+        if confirmacion:
+            for item in seleccionado:
+                tabla_libros.delete(item)
+    else:
+        messagebox.showwarning("Selección vacía", "Por favor, selecciona un libro para eliminar.")
 
 # Configuración de la ventana principal
 root = tk.Tk()
@@ -76,10 +99,6 @@ tabla_libros = ttk.Treeview(root, columns=columnas, show="headings", style="Tree
 for col in columnas:
     tabla_libros.heading(col, text=col)
     tabla_libros.column(col, width=100)
-
-# Cambiar color de fondo de la tabla
-tabla_libros.tag_configure('oddrow', background=color_amarillo)
-tabla_libros.tag_configure('evenrow', background=color_celeste)
 
 tabla_libros.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
@@ -127,9 +146,13 @@ entrada_descripcion.grid(row=6, column=1, padx=10, pady=5)
 boton_agregar = tk.Button(frame, text="Agregar Libro", bg=color_celeste, command=agregar_libro)
 boton_agregar.grid(row=7, column=1, padx=10, pady=10)
 
-# Botón para cerrar
-boton_cerrar = tk.Button(root, text="Cerrar", bg=color_amarillo, command=root.quit)
-boton_cerrar.pack(pady=10)
+# Botón para eliminar libro
+boton_eliminar = tk.Button(frame, text="Eliminar Libro", bg=color_amarillo, command=eliminar_libro)
+boton_eliminar.grid(row=8, column=1, padx=10, pady=10)
+
+# Botón para volver
+boton_volver = tk.Button(root, text="Volver", bg=color_amarillo, command=root.quit)
+boton_volver.pack(pady=10)
 
 # Aplicar estilo a las combobox para que también tengan color de fondo
 style.configure("TCombobox", fieldbackground=color_celeste, background=color_celeste)
