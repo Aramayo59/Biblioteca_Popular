@@ -9,17 +9,25 @@ def login_interface():
     # Desactivar la opción de redimensionar la ventana
     root.resizable(False, False)
 
+    # Colores
+    fondo_color = "#5277FF"  # Azul de fondo
+    boton_color = "#38B6FF"  # Celeste para botones
+    texto_color = "#FFF852"  # Amarillo para texto
+
+    # Configurar color de fondo de la ventana
+    root.config(bg=fondo_color)
+
     # Etiqueta de título
-    tk.Label(root, text="Iniciar Sesión", font=("Arial", 24)).pack(pady=30)
+    tk.Label(root, text="Iniciar Sesión", font=("Arial", 24), fg=texto_color, bg=fondo_color).pack(pady=30)
 
     # Campo de usuario
-    tk.Label(root, text="Usuario:", font=("Arial", 14)).pack(pady=10)
-    user_entry = tk.Entry(root, font=("Arial", 12))
+    tk.Label(root, text="Usuario:", font=("Arial", 14), fg=texto_color, bg=fondo_color).pack(pady=10)
+    user_entry = tk.Entry(root, font=("Arial", 12), bg="white")
     user_entry.pack()
 
     # Campo de contraseña
-    tk.Label(root, text="Contraseña:", font=("Arial", 14)).pack(pady=10)
-    pass_entry = tk.Entry(root, show="*", font=("Arial", 12))
+    tk.Label(root, text="Contraseña:", font=("Arial", 14), fg=texto_color, bg=fondo_color).pack(pady=10)
+    pass_entry = tk.Entry(root, show="*", font=("Arial", 12), bg="white")
     pass_entry.pack()
 
     # Mostrar/ocultar contraseña
@@ -30,7 +38,7 @@ def login_interface():
         else:
             pass_entry.config(show="*")
 
-    tk.Checkbutton(root, text="Mostrar contraseña", variable=show_pass_var, command=toggle_password).pack(pady=10)
+    tk.Checkbutton(root, text="Mostrar contraseña", variable=show_pass_var, command=toggle_password, bg=fondo_color, fg=texto_color).pack(pady=10)
 
     # Función de inicio de sesión
     def iniciar_sesion():
@@ -50,7 +58,7 @@ def login_interface():
             messagebox.showerror("Error", "Usuario o contraseña incorrectos")
 
     # Botón para iniciar sesión
-    tk.Button(root, text="Iniciar Sesión", font=("Arial", 14), command=iniciar_sesion).pack(pady=20)
+    tk.Button(root, text="Iniciar Sesión", font=("Arial", 14), bg=boton_color, fg="black", command=iniciar_sesion).pack(pady=20)
 
     root.mainloop()
 
