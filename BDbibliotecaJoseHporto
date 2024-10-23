@@ -115,4 +115,29 @@ CREATE TABLE `administrador` (
 
 
 SHOW TABLES;
-show columns from prestamos
+show columns from prestamos;
+SELECT * FROM prestamos;
+DESCRIBE prestamos;
+SELECT *FROM libros;
+SELECT * FROM socios;
+
+
+            INSERT INTO libros  (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('El Gran Gatsby', 5, 'disponible', 1, 1, 1);	
+INSERT INTO subcategoria (nombre) Values ('aventura');
+insert into categoria (nombre, id_subcategoria) values('disney', 1);
+INSERT INTO editorial (nombre) values ('disney');
+Insert into autor (nombre, apellido) values ('jorge', 'bucay');
+
+ALTER TABLE prestamos
+MODIFY COLUMN estado_prestamo VARCHAR(255) DEFAULT 'Pendiente';
+
+      INSERT INTO libros  (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('Blanca Nieves', 2, 'disponible',2, 2, 2);	
+INSERT INTO subcategoria (nombre) Values ('aventura');
+insert into categoria (nombre, id_subcategoria) values('disney', 2);
+INSERT INTO editorial (nombre) values ('disney');
+Insert into autor (nombre, apellido) values ('jorge', 'bucay');
+
+DESCRIBE editorial;
+
