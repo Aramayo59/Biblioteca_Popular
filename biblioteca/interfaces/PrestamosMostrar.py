@@ -1,0 +1,88 @@
+import tkinter as tk
+from tkinter import * 
+from tkinter import ttk
+from tkinter import messagebox
+from Mostrar import *
+from ConexionBDBiblioteca import *
+from Mostrar import *
+from ModificarPrestamo import modificar_prestamos
+from RegistroPrestamos import prestamos_interface
+
+def Formulario_prestamos():
+        try: 
+                ventana = Tk()
+                ventana.geometry ("1230x300")
+                ventana.title("Gestion De Prestamos")
+
+                marco_grilla= LabelFrame(ventana, text= "Prestamos Registrados", padx=5, pady=5,)
+                marco_grilla.grid(row=0, column=0,padx=5,pady=5)
+            
+                marco_grilla_button = LabelFrame(ventana)
+                marco_grilla_button.grid(row = 1,column=0)
+           
+
+                grilla_prestamos= ttk.Treeview(marco_grilla,columns=( "Nombre", "apellido","Dni","Isbn","Fecha devolucion", "Estado" ),show='headings', height=5,)
+            
+                grilla_prestamos.column("#1", anchor=CENTER)
+                grilla_prestamos.heading("#1",text="Nombre")
+            
+                grilla_prestamos.column("#2", anchor=CENTER)
+                grilla_prestamos.heading("#2",text="Apellido")
+
+                grilla_prestamos.column("#3", anchor=CENTER)
+                grilla_prestamos.heading("# 3", text="DNI")
+            
+                grilla_prestamos.column("#4", anchor=CENTER)
+                grilla_prestamos.heading("# 4", text="Isbn")
+            
+                grilla_prestamos.column("#5", anchor=CENTER)
+                grilla_prestamos.heading("# 5", text="Fecha de devolucion")
+            
+                grilla_prestamos.column("#6", anchor=CENTER)
+                grilla_prestamos.heading("# 6", text="Estado")
+           
+                dato_prestamo = mostrarPrestamos()
+                if dato_prestamo:
+                        for row in dato_prestamo:
+                                grilla_prestamos.insert("", "end", values=row)
+           
+                grilla_prestamos.pack()
+                def abrir_modificar():
+                        selected_item = grilla_prestamos.focus()  
+                        if not selected_item:
+                                messagebox.showwarning("Advertencia", "Seleccione un préstamo para modificar.")
+                                return
+                        # Obtener los valores de la fila seleccionada
+                        datos_fila = grilla_prestamos.item(selected_item, "values")
+                        nombreyapellido = f"{datos_fila[0]} {datos_fila[1]}"
+                        dni = f"{datos_fila[2]}"
+                        isbn = f"{datos_fila[3]}"
+                        
+                        modificar_prestamos(nombreyapellido, dni, isbn)  # Llamar a la función con los datos
+                boton_modificar = tk.Button(
+                marco_grilla_button, text="Modificar Préstamo",
+                font=("Arial", 12, "bold"), command=abrir_modificar)
+                boton_modificar.grid(pady=10)
+
+                boton_modificar = tk.Button(
+                marco_grilla_button, text="Ingresar Prestamo",
+                font=("Arial", 12, "bold"), command=prestamos_interface)
+                boton_modificar.grid(row= 0, column= 1,pady=10)            
+                ventana.mainloop()
+              
+                              
+                # Botón para modificar préstamo
+               
+        except ValueError as error:
+            print("Error al mostrar la interfaz, error{}".format(error))
+        boton_modificar = tk.Button(
+        marco_grilla_button, text="Modificar Préstamo",
+        font=("Arial", 12, "bold"), command=abrir_modificar)
+        boton_modificar.grid(pady=10)
+
+        boton_modificar = tk.Button(
+        marco_grilla_button, text="Ingresar Prestamo",
+        font=("Arial", 12, "bold"), command=prestamos_interface)
+        boton_modificar.grid(row= 0, column= 1,pady=10)            
+        ventana.mainloop()
+Formulario_prestamos()   

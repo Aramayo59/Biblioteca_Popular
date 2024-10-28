@@ -1,7 +1,6 @@
 from ConexionBDBiblioteca import *   
-class Prestamos:
-    
-    def mostrarPrestamos():
+
+def mostrarPrestamos():
         try: 
             conexion = Cconexion.conexion()
             cursor = conexion.cursor()

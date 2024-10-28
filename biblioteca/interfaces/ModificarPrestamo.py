@@ -4,12 +4,11 @@ from tkinter import ttk
 from tkcalendar import DateEntry  # Importamos DateEntry para el calendario
 import mysql.connector  # Asegúrate de que tienes esta biblioteca
 from ConexionBDBiblioteca import *  # Importa la función de conexión a la BD
-from ValidacionesPrestamos import *
+from ValidacionesPrestamos import *  
 
+def modificar_prestamos(nombreyapellido, dni, isbn):
 
-def Modificar_Prestamos():
-    
-    ventana_prestamos = tk.Tk()
+    ventana_prestamos = tk.Toplevel()
     ventana_prestamos.title("Nuevo Préstamo")
     ventana_prestamos.geometry("350x700+500+70")
     ventana_prestamos.configure(bg="#ff5100")  
@@ -42,8 +41,8 @@ def Modificar_Prestamos():
 
                     if resultado:
                         nombre_completo_box.delete(0, tk.END)
-                        nombre_completo = resultado   # Nombre y Apellido
-                        nombre_completo_box['values'] = [nombre_completo]  # Cargar el nombre completo en el combobox
+                        nombre_completo = resultado
+                        nombre_completo_box['values'] = [nombre_completo]  
                         nombre_completo_box.set(nombre_completo)
                     else:
                         messagebox.showinfo("Buscar", f"No se encontró ningún socio con el DNI: {dni_busqueda}")
@@ -83,12 +82,14 @@ def Modificar_Prestamos():
                 messagebox.showerror("Error", f"Error en la búsqueda de libros: {err}")
 
         
-    def modificar_prestamo():
+    def ingresar_prestamo_modificado():
+            
+
             socio = nombre_completo_box.get().strip()
             dni = dni_entry.get().strip()
             isbn = isbn_entry.get().strip()
-            fecha_prestamo = obtener_fecha_prestamo1()
-            fecha_devolucion = obtener_fecha_prestamo2()
+            fecha_prestamo = devolucion_entry1.get_date()
+            fecha_devolucion = devolucion_entry2.get_date()
             
             
             if socio and dni and isbn and fecha_prestamo and fecha_devolucion:
@@ -96,25 +97,30 @@ def Modificar_Prestamos():
                     conexion = Cconexion.conexion()
                     cursor = conexion.cursor()
                     
-                    cursor.execute("SELECT id_prestamos FROM prestamos WHERE isbn = %s",(dni,))
-                    id_prestamo = cursor.fetchone()
-                                        
-                    if id_prestamo:
+                    cursor.execute("SELECT id_socios FROM socios WHERE DNI = %s",(dni,))
+                    id_socios = cursor.fetchone()   
+                    if not id_socios:
+                        messagebox.showerror("Error", f"No se encontró un socio con el DNI: {dni}")
+                        return  
+                                     
+                    if id_socios:
                        
-                        cursor.execute("SELECT id_libros FROM libros WHERE isbn = %s",(isbn,))
-                        isbn_libro = cursor.fetchone()  
-
-                        if isbn_libro:
+                        cursor.execute("SELECT id_libros FROM libros WHERE isbn = %s", (isbn,))
+                        id_libro = cursor.fetchone()
+                        if not id_libro:
+                            messagebox.showerror("Error", f"No se encontró un libro con el ISBN: {isbn}")
+                            return
+                        id_libro = id_libro[0]
+                        if id_libro:
                             
                             
                             sql = """
-                            UPDATE prestamos
-                            SET fecha_prestamo = %s, fecha_devolucion = %s, id_socios = %s
-                            WHERE id_prestamos = %s;
-                            """
-
-                            # Valores en el orden adecuado
-                            valores = (fecha_prestamo, fecha_devolucion, socio, isbn, )
+                                    UPDATE prestamos 
+                                    SET id_socios = %s, isbn = %s, fecha_prestamo = %s, fecha_devolucion = %s
+                                    , id_libro = %s 
+                                    WHERE dni = %s;
+                                """
+                            valores = (id_socios, isbn, fecha_prestamo, fecha_devolucion, dni)
                             
                             # Ejecutar la consulta
                             cursor.execute(sql, valores)
@@ -135,14 +141,9 @@ def Modificar_Prestamos():
             else:
                 messagebox.showwarning("Advertencia", "Por favor complete todos los campos.")
         
-       
-        
-        
-        
-
-        
     tk.Label(ventana_prestamos, text="DNI", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
     dni_entry = tk.Entry(ventana_prestamos, font=("Arial", 12), width=25)
+    dni_entry.insert(0, dni)
     dni_entry.pack()
        
 
@@ -150,13 +151,17 @@ def Modificar_Prestamos():
         
     tk.Label(ventana_prestamos, text="Nombre completo", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
     nombre_completo_box = ttk.Combobox(ventana_prestamos, font=("Arial", 12), width=25, state="readonly")
+    nombre_completo_box.insert(0, nombreyapellido)
     nombre_completo_box.pack()
+   
     
         
 
     tk.Label(ventana_prestamos, text="Isbn del libro", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
     isbn_entry = tk.Entry(ventana_prestamos, font=("Arial", 12), width=25)
+    isbn_entry.insert(0, isbn)
     isbn_entry.pack()
+    
 
     tk.Button(ventana_prestamos, text="Buscar Libro", font=("Arial", 10, "bold"), bg="#d9b38c", command=buscar_libros).pack(pady=10)
 
@@ -164,7 +169,7 @@ def Modificar_Prestamos():
     fecha_hoy1 = datetime.now()
     devolucion_entry1 = DateEntry(ventana_prestamos, font=("Arial", 12), width=23, background="lightgreen", foreground="black", borderwidth=2,locale="es_Es", date_pattern='dd/MM/yyyy', mindate=fecha_hoy1, state="readonly")
     devolucion_entry1.pack(pady=5)
-        
+    
     tk.Label(ventana_prestamos, text="Fecha Devolución", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
     fecha_hoy2 = datetime.now()
 
@@ -178,26 +183,9 @@ def Modificar_Prestamos():
     devolucion_entry2 = DateEntry(ventana_prestamos, font=("Arial", 12), width=23, background="lightgreen", foreground="black", borderwidth=2, locale="es_Es",  date_pattern='dd/MM/yyyy', mindate=fecha_hoy2, state="readonly")
     devolucion_entry2.pack(pady=5)
 
-    def obtener_fecha_prestamo1():
-     # Obtener el valor de la fecha desde el DateEntry
-        fecha_prestamo_str = devolucion_entry1.get()
-            # Convertir la cadena en un objeto de fecha
-        fecha_prestamo = datetime.strptime(fecha_prestamo_str, "%d/%m/%Y").date()
-        return fecha_prestamo
-    
-    def obtener_fecha_prestamo2():
-     # Obtener el valor de la fecha desde el DateEntry
-        fecha_prestamo_str = devolucion_entry2.get()
-            # Convertir la cadena en un objeto de fecha
-        fecha_prestamo = datetime.strptime(fecha_prestamo_str, "%d/%m/%Y").date()
-        return fecha_prestamo
-
-
     # Botón para registrar el préstamo
-    tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=modificar_prestamo).pack(pady=20)
+    tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=ingresar_prestamo_modificado).pack(pady=20)
     tk.Button(ventana_prestamos, text="Cancelar", font= ("Arial",12,"bold"),bg="#d9b38c", fg= "black",command=salir).pack(pady=10)
 
     ventana_prestamos.mainloop()
-
-Modificar_Prestamos()
 

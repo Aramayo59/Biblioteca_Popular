@@ -9,7 +9,7 @@ from ValidacionesPrestamos import *
 
 def prestamos_interface():
     
-    ventana_prestamos = tk.Tk()
+    ventana_prestamos = tk.Toplevel()
     ventana_prestamos.title("Nuevo Préstamo")
     ventana_prestamos.geometry("350x700+500+70")
     ventana_prestamos.configure(bg="#ff5100")  
@@ -61,11 +61,10 @@ def prestamos_interface():
             try:
                 conexion = Cconexion.conexion()
                 cursor = conexion.cursor()
-                
                 sql = ("SELECT titulo FROM libros WHERE isbn = %s")
                 cursor.execute(sql,(isbn,))
                 resultado = cursor.fetchone()
-                
+
                 if resultado:
                     
                     messagebox.showinfo("Buscar", f"Libro encontrado: {resultado}")
@@ -168,9 +167,9 @@ def prestamos_interface():
         devolucion_entry2.set_date(datetime.now())
 
     # Botón para registrar el préstamo
-    tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=registrar_prestamo).pack(pady=20)
+    tk.Button(ventana_prestamos, text="Ingresar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=registrar_prestamo).pack(pady=20)
     tk.Button(ventana_prestamos, text="Cancelar", font= ("Arial",12,"bold"),bg="#d9b38c", fg= "black",command=salir).pack(pady=10)
 
     ventana_prestamos.mainloop()
 
-prestamos_interface()
+

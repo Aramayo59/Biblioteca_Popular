@@ -5,10 +5,6 @@ from datetime import datetime
 from tkinter import messagebox
 
 
-        
-        
-            
-        
 def validar_fechas(fecha_prestamo, fecha_devolucion):
 
             try:
