@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -182,7 +181,7 @@ boton_agregar.grid(row=7, column=0, padx=10, pady=10)
 boton_eliminar = tk.Button(frame, text="Eliminar Libro", bg=color_naranja, command=eliminar_libro)
 boton_eliminar.grid(row=7, column=1, padx=10, pady=10)
 
-# Cargar libros desde el archivo JSON al inicio
+
 cargar_libros()
 
 root.mainloop()
