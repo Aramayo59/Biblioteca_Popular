@@ -193,7 +193,7 @@ def Modificar_Prestamos():
         return fecha_prestamo
 
 
-    # Botón para registrar el préstamo
+  
     tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=modificar_prestamo).pack(pady=20)
     tk.Button(ventana_prestamos, text="Cancelar", font= ("Arial",12,"bold"),bg="#d9b38c", fg= "black",command=salir).pack(pady=10)
 
