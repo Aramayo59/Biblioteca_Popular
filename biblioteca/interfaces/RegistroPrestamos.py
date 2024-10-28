@@ -9,7 +9,7 @@ from ValidacionesPrestamos import *
 
 def prestamos_interface():
     
-    ventana_prestamos = tk.Toplevel()
+    ventana_prestamos = tk.Tk()
     ventana_prestamos.title("Nuevo Préstamo")
     ventana_prestamos.geometry("350x700+500+70")
     ventana_prestamos.configure(bg="#ff5100")  

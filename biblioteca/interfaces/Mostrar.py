@@ -5,7 +5,8 @@ def mostrarPrestamos():
             conexion = Cconexion.conexion()
             cursor = conexion.cursor()
             cursor.execute("""
-                SELECT 
+                SELECT
+
                     s.Nombre,
                     s.Apellido,
                     s.DNI,
