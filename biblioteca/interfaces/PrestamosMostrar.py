@@ -14,8 +14,9 @@ def Formulario_prestamos():
                 ventana = Tk()
                 ventana.geometry ("1230x300")
                 ventana.title("Gestion De Prestamos")
+                ventana.config (bg="#ff5100")
 
-                marco_grilla= LabelFrame(ventana, text= "Prestamos Registrados", padx=5, pady=5,)
+                marco_grilla= LabelFrame(ventana, text= "Prestamos Registrados", padx=5, pady=5, bg="#d9b38c")
                 marco_grilla.grid(row=0, column=0,padx=5,pady=5)
             
                 marco_grilla_button = LabelFrame(ventana)
@@ -102,10 +103,6 @@ def Formulario_prestamos():
                         isbn = f"{datos_fila[3]}"
                         
                         modificar_prestamos(nombreyapellido, dni, isbn)  # Llamar a la función con los datos
-                
-              
-                              
-                # Botón para modificar préstamo
                
         except ValueError as error:
             print("Error al mostrar la interfaz, error{}".format(error))
