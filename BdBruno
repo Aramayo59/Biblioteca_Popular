@@ -7,11 +7,10 @@ CREATE DATABASE `BibliotecaJoseHPorto`;
 -- Usar la base de datos recién creada
 USE `BibliotecaJoseHPorto`;
 
--- Eliminar la tabla `socios` si ya existe
-DROP TABLE IF EXISTS `socios`;
-
 -- Crear la tabla `socios`
-CREATE TABLE `socios`(
+DROP TABLE IF EXISTS `socios`;
+-- Tabla que almacena la información de los socios de la biblioteca
+CREATE TABLE `socios` (
   `id_socios` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(24) NOT NULL,
@@ -21,26 +20,38 @@ CREATE TABLE `socios`(
   PRIMARY KEY (`id_socios`)
 );
 
--- Crear la tabla de autor
-CREATE TABLE `autor`(
+-- Eliminar la tabla `autor` si ya existe
+DROP TABLE IF EXISTS `autor`;
+-- Tabla que almacena la información de los autores de libros
+CREATE TABLE `autor` (
   `id_autor` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(24) NOT NULL,
   PRIMARY KEY (`id_autor`)
 );
 
--- Crear tabla `editorial`
+-- Eliminar la tabla `editorial` si ya existe
 DROP TABLE IF EXISTS `editorial`;
-
-CREATE TABLE `editorial`(
+-- Tabla que almacena la información de las editoriales de libros
+CREATE TABLE `editorial` (
   `id_editorial` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_editorial`)
 );
 
--- Crear tabla categoria
+-- Eliminar la tabla `subcategoria` si ya existe
+DROP TABLE IF EXISTS `subcategoria`;
+-- Tabla que almacena las subcategorías de los libros
+CREATE TABLE `subcategoria` (
+  `id_subcategoria` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_subcategoria`)
+);
 
-CREATE TABLE `categoria`(
+-- Eliminar la tabla `categoria` si ya existe
+DROP TABLE IF EXISTS `categoria`;
+-- Tabla que almacena las categorías de los libros, vinculadas a una subcategoría
+CREATE TABLE `categoria` (
   `id_categoria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `id_subcategoria` INT NOT NULL,
@@ -48,15 +59,9 @@ CREATE TABLE `categoria`(
   FOREIGN KEY (`id_subcategoria`) REFERENCES subcategoria(`id_subcategoria`)
 );
 
--- Crear tabla subcategoria
-
-CREATE TABLE `subcategoria`(
-  `id_subcategoria` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id_subcategoria`)
-);
--- Crear la tabla `libros`
+-- Eliminar la tabla `libros` si ya existe
 DROP TABLE IF EXISTS `libros`;
+-- Tabla que almacena la información de los libros
 CREATE TABLE `libros` (
   `id_libros` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(45) NOT NULL,
@@ -69,18 +74,17 @@ CREATE TABLE `libros` (
   PRIMARY KEY (`id_libros`),
   FOREIGN KEY (`id_editorial`) REFERENCES editorial(`id_editorial`),
   FOREIGN KEY (`id_autor`) REFERENCES autor(`id_autor`),
-  FOREIGN KEY (`id_categoria`)REFERENCES categoria(`id_categoria`)
+  FOREIGN KEY (`id_categoria`) REFERENCES categoria(`id_categoria`)
 );
 
 -- Eliminar la tabla `prestamos` si ya existe
-DROP TABLE IF EXISTS `Prestamos`;
-
--- Crear la tabla `prestamos`
+DROP TABLE IF EXISTS `prestamos`;
+-- Tabla que almacena la información de los préstamos de libros realizados por los socios
 CREATE TABLE `prestamos` (
   `id_prestamos` INT NOT NULL AUTO_INCREMENT,
   `fecha_prestamo` VARCHAR(45) NOT NULL,
   `fecha_devolucion` VARCHAR(45) NOT NULL,
-  `estado_prestamo` VARCHAR(45) NOT NULL,
+  `estado_prestamo` VARCHAR(255) DEFAULT 'Pendiente' NOT NULL,
   `id_socios` INT NOT NULL,  -- Relación con la tabla socios
   `id_libros` INT NOT NULL,
   PRIMARY KEY (`id_prestamos`),
@@ -88,7 +92,9 @@ CREATE TABLE `prestamos` (
   FOREIGN KEY (`id_libros`) REFERENCES libros(`id_libros`)
 );
 
+-- Eliminar la tabla `bibliotecaria` si ya existe
 DROP TABLE IF EXISTS `bibliotecaria`;
+-- Tabla que almacena la información del personal bibliotecario
 CREATE TABLE `bibliotecaria` (
   `id_bibliotecaria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
@@ -96,69 +102,72 @@ CREATE TABLE `bibliotecaria` (
   `dni` VARCHAR(45) NOT NULL,
   `telefono` VARCHAR(45) NOT NULL,
   `direccion` VARCHAR(45) NOT NULL,
-  `legajo` INT (2)  NOT NULL, 
+  `legajo` INT NOT NULL,
   PRIMARY KEY (`id_bibliotecaria`)
-  );
+);
 
+-- Eliminar la tabla `administrador` si ya existe
 DROP TABLE IF EXISTS `administrador`;
--- Crear la tabla `administrador`
+-- Tabla que almacena la información de los administradores de la biblioteca
 CREATE TABLE `administrador` (
-  `id_admnistrador` INT NOT NULL AUTO_INCREMENT,
+  `id_administrador` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(24) NOT NULL,
   `dni` VARCHAR(11),
   `telefono` VARCHAR(11),
   `id_bibliotecaria` INT NOT NULL,
-  PRIMARY KEY (`id_admnistrador`)
+  PRIMARY KEY (`id_administrador`),
+  FOREIGN KEY (`id_bibliotecaria`) REFERENCES bibliotecaria(`id_bibliotecaria`)
 );
 
-
+-- Mostrar tablas
 SHOW TABLES;
-show columns from prestamos;
+
+-- Insertar datos de ejemplo
+
+-- Insertar en subcategoria
+INSERT INTO subcategoria (nombre) VALUES ('aventura');
+
+-- Insertar en categoria
+INSERT INTO categoria (nombre, id_subcategoria) VALUES ('Disney', 1);
+
+-- Insertar en editorial
+INSERT INTO editorial (nombre) VALUES ('Disney');
+
+-- Insertar en autor
+INSERT INTO autor (nombre, apellido) VALUES ('Jorge', 'Bucay');
+
+-- Insertar en libros
+INSERT INTO libros (titulo,isbn, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('El Gran Gatsby','21311', 5, 'disponible', 1, 1, 1);	
+
+INSERT INTO libros (titulo,isbn, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('El Hombre araña','45692', 3, 'disponible', 1, 1, 1);	
+
+INSERT INTO libros (titulo,isbn, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('El Hombre araña','28852', 3, 'disponible', 1, 1, 1);	
+
+-- Insertar más datos de ejemplo
+INSERT INTO libros (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
+VALUES ('Blanca Nieves', 2, 'disponible', 1, 1, 1);	
+
+-- Agregar más socios como ejemplo
+INSERT INTO socios (nombre, apellido, DNI, telefono, fecha_ultimo_pago) 
+VALUES ('Juan', 'Pérez', '12345678', '45692965', '2024-10-01');
+
+-- Insertar más bibliotecarios como ejemplo
+INSERT INTO bibliotecaria (nombre, apellido, dni, telefono, direccion, legajo) 
+VALUES ('Ana', 'García', '87654321', '28852323', 'Calle Falsa 123', 1);
+
+-- Insertar un administrador
+INSERT INTO administrador (nombre, apellido, dni, telefono, id_bibliotecaria) 
+VALUES ('Luis', 'Martínez', '11223344', '28852345', 1);
+
+-- Consultar las tablas
 SELECT * FROM prestamos;
-DESCRIBE prestamos;
-SELECT *FROM libros;
+SELECT * FROM libros;
 SELECT * FROM socios;
-
-
-            INSERT INTO libros  (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
-VALUES ('El Gran Gatsby', 5, 'disponible', 1, 1, 1);	
-INSERT INTO subcategoria (nombre) Values ('aventura');
-insert into categoria (nombre, id_subcategoria) values('disney', 1);
-INSERT INTO editorial (nombre) values ('disney');
-Insert into autor (nombre, apellido) values ('jorge', 'bucay');
-
-ALTER TABLE prestamos
-MODIFY COLUMN estado_prestamo VARCHAR(255) DEFAULT 'Pendiente';
-
-      INSERT INTO libros  (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
-VALUES ('Blanca Nieves', 2, 'disponible',2, 2, 2);	
-INSERT INTO subcategoria (nombre) Values ('aventura');
-insert into categoria (nombre, id_subcategoria) values('disney', 2);
-INSERT INTO editorial (nombre) values ('disney');
-Insert into autor (nombre, apellido) values ('jorge', 'bucay');
-DELETE FROM prestamos WHERE id = 1;
-
-DESCRIBE editorial;
-SELECT id_prestamos FROM prestamos WHERE dni;
-UPDATE prestamos SET estado_prestamo = 'inactivo' WHERE id_prestamos = 1;
- SELECT
-                                        p.id_prestamos
-                                        FROM 
-                                        prestamos p
-                                        JOIN 
-                                        socios s ON p.id_socios = s.id_socios
-                                        WHERE 
-                                        s.dni = 45692965;
-                                        
-INSERT INTO libros  (titulo, num_ejemplar, estado_libro,isbn, id_categoria, id_editorial, id_autor) 
-VALUES ('El hombre araña', 3, 'disponible',45692, 3, 3);	
-INSERT INTO subcategoria (nombre) Values ('aventura');
-insert into categoria (nombre, id_subcategoria) values('spiderman', 3);
-INSERT INTO editorial (nombre) values ('marvel');
-Insert into autor (nombre, apellido) values ('jorge', 'bucay');
-DELETE FROM prestamos WHERE id = 1;
-
-select * from categoria;
-select * from editorial;
-select * from subcategoria;
+SELECT * FROM editorial;
+SELECT * FROM autor;
+SELECT * FROM categoria;
+SELECT * FROM subcategoria;
