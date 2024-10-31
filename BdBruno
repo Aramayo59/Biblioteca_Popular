@@ -137,5 +137,28 @@ INSERT INTO subcategoria (nombre) Values ('aventura');
 insert into categoria (nombre, id_subcategoria) values('disney', 2);
 INSERT INTO editorial (nombre) values ('disney');
 Insert into autor (nombre, apellido) values ('jorge', 'bucay');
+DELETE FROM prestamos WHERE id = 1;
 
 DESCRIBE editorial;
+SELECT id_prestamos FROM prestamos WHERE dni;
+UPDATE prestamos SET estado_prestamo = 'inactivo' WHERE id_prestamos = 1;
+ SELECT
+                                        p.id_prestamos
+                                        FROM 
+                                        prestamos p
+                                        JOIN 
+                                        socios s ON p.id_socios = s.id_socios
+                                        WHERE 
+                                        s.dni = 45692965;
+                                        
+INSERT INTO libros  (titulo, num_ejemplar, estado_libro,isbn, id_categoria, id_editorial, id_autor) 
+VALUES ('El hombre araña', 3, 'disponible',45692, 3, 3);	
+INSERT INTO subcategoria (nombre) Values ('aventura');
+insert into categoria (nombre, id_subcategoria) values('spiderman', 3);
+INSERT INTO editorial (nombre) values ('marvel');
+Insert into autor (nombre, apellido) values ('jorge', 'bucay');
+DELETE FROM prestamos WHERE id = 1;
+
+select * from categoria;
+select * from editorial;
+select * from subcategoria;
