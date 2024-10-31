@@ -145,7 +145,7 @@ INSERT INTO libros (titulo,isbn, num_ejemplar, estado_libro, id_categoria, id_ed
 VALUES ('El Hombre araña','45692', 3, 'disponible', 1, 1, 1);	
 
 INSERT INTO libros (titulo,isbn, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
-VALUES ('El Hombre araña','28852', 3, 'disponible', 1, 1, 1);	
+VALUES ('blanca Nieves','28852', 3, 'disponible', 1, 1, 1);	
 
 -- Insertar más datos de ejemplo
 INSERT INTO libros (titulo, num_ejemplar, estado_libro, id_categoria, id_editorial, id_autor) 
