@@ -85,7 +85,7 @@ def prestamos_interface():
             socio = nombre_completo_box.get().strip()
             dni = dni_entry.get().strip()
             isbn = isbn_entry.get().strip()
-            fecha_prestamo = datetime.now()
+            fecha_prestamo = devolucion_entry1.get()
             fecha_devolucion = devolucion_entry2.get_date()
             
             
@@ -149,21 +149,22 @@ def prestamos_interface():
     tk.Button(ventana_prestamos, text="Buscar Libro", font=("Arial", 10, "bold"), bg="#d9b38c", command=buscar_libros).pack(pady=10)
 
     tk.Label(ventana_prestamos, text="Fecha Préstamo", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
-    fecha_hoy1 = datetime.now()
-    devolucion_entry1 = DateEntry(ventana_prestamos, font=("Arial", 12), width=23, background="lightgreen", foreground="black", borderwidth=2,locale="es_Es", date_pattern='dd/MM/yyyy', mindate=fecha_hoy1, state="readonly")
-    devolucion_entry1.pack(pady=5)
+    fecha_hoy1 = datetime.now().strftime('%d/%m/%Y')
+    devolucion_entry1 = ttk.Combobox(ventana_prestamos, font=("Arial", 12), state="readonly")
+    devolucion_entry1['values'] = (fecha_hoy1,)  # Asignar la fecha de hoy como el único valor
+    devolucion_entry1.current(0)  # Seleccionar el primer (y único) elemento en la lista
+    devolucion_entry1.pack(pady=20)
         
     tk.Label(ventana_prestamos, text="Fecha Devolución", font=("Arial", 12, "bold"), bg="#ff5100", fg="white").pack(pady=10)
     fecha_hoy2 = datetime.now()
 
     devolucion_entry2 = DateEntry(ventana_prestamos, font=("Arial", 12), width=23, background="lightgreen", foreground="black", borderwidth=2, locale="es_Es",  date_pattern='dd/MM/yyyy', mindate=fecha_hoy2, state="readonly")
-    devolucion_entry2.pack(pady=5)
+    devolucion_entry2.pack(pady=20)
 
     def limpiar_campos():
         dni_entry.delete(0, tk.END)  
         nombre_completo_box.set("")  
         isbn_entry.delete(0, tk.END) 
-        devolucion_entry1.set_date(datetime.now())  
         devolucion_entry2.set_date(datetime.now())
 
     # Botón para registrar el préstamo
