@@ -183,9 +183,11 @@ def modificar_prestamos(nombreyapellido, dni, isbn):
     devolucion_entry2 = DateEntry(ventana_prestamos, font=("Arial", 12), width=23, background="lightgreen", foreground="black", borderwidth=2, locale="es_Es",  date_pattern='dd/MM/yyyy', mindate=fecha_hoy2, state="readonly")
     devolucion_entry2.pack(pady=5)
 
-    # Botón para registrar el préstamo
-    tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=ingresar_prestamo_modificado).pack(pady=20)
+
+
+
+  
+    tk.Button(ventana_prestamos, text="Registrar", font=("Arial", 12, "bold"), bg="#d9b38c", fg="black", command=modificar_prestamo).pack(pady=20)
     tk.Button(ventana_prestamos, text="Cancelar", font= ("Arial",12,"bold"),bg="#d9b38c", fg= "black",command=salir).pack(pady=10)
 
     ventana_prestamos.mainloop()
-
