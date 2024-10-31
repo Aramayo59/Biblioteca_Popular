@@ -185,4 +185,3 @@ boton_eliminar.grid(row=7, column=1, padx=10, pady=10)
 cargar_libros()
 
 root.mainloop()
-
