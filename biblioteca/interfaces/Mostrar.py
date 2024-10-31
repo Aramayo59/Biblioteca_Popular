@@ -19,7 +19,9 @@ def mostrarPrestamos():
                 JOIN 
                     socios s ON p.id_socios = s.id_socios
                 JOIN 
-                    libros l ON p.id_libros = l.id_libros;
+                    libros l ON p.id_libros = l.id_libros
+                WHERE 
+                    p.estado_prestamo = 'pendiente'
             """)
             conexion.commit
             miresultado = cursor.fetchall()

@@ -7,7 +7,6 @@ from ConexionBDBiblioteca import *
 from Mostrar import *
 from ModificarPrestamo import modificar_prestamos
 from RegistroPrestamos import prestamos_interface
-from MostrarIdPrestamo import mostrar_id_prestamo
 
 def Formulario_prestamos():
         try: 
@@ -35,7 +34,7 @@ def Formulario_prestamos():
                 grilla_prestamos.heading("# 3", text="DNI")
             
                 grilla_prestamos.column("#4", anchor=CENTER)
-                grilla_prestamos.heading("# 4", text="Isbn")
+                grilla_prestamos.heading("# 4", text="ISBN")
             
                 grilla_prestamos.column("#5", anchor=CENTER)
                 grilla_prestamos.heading("# 5", text="Fecha de devolucion")
@@ -57,30 +56,32 @@ def Formulario_prestamos():
 
                         # Obtener los valores de la fila seleccionada
                         datos_fila = grilla_prestamos.item(selected_item, "values")
+                        isbn = f"{datos_fila[3]}"
                         dni = f"{datos_fila[2]}"
 
                         # Confirmación antes de eliminar
-                        if messagebox.askyesno("Confirmación", f"¿Estás seguro de eliminar el préstamo con DNI {dni}?"):
+                        if messagebox.askyesno("Confirmación", f"¿Estás seguro de eliminar el préstamo con el dni {dni}?"):
                                 conexion = Cconexion.conexion()
                                 cursor = conexion.cursor()
 
                         try:
                                 # Consulta para obtener el ID del préstamo basado en el DNI
-                                sql = """"
+                                sql = """
                                         SELECT
-                                        p.id_prestamo
+                                        p.id_libros
                                         FROM 
                                         prestamos p
                                         JOIN 
-                                        socios s ON p.id_socios = s.id_socios
+                                        libros l ON p.id_libros = l.id_libros
                                         WHERE 
-                                        s.dni = %s;"""
-                                cursor.execute(sql, (dni,))
+                                        l.isbn = %s;"""
+                                cursor.execute(sql, (isbn,))
                                 id_resultado = cursor.fetchone()  # Devuelve una fila
+                                cursor.fetchall()
                                 if id_resultado:
-                                        prestamo_id = id_resultado[0]  # Obtener el ID del préstamo
-                                        sql = "DELETE FROM prestamos WHERE id_prestamo = %s"
-                                        cursor.execute(sql, (prestamo_id,))
+                                        libro_id = id_resultado[0]  # Obtener el ID del préstamo
+                                        sql = "UPDATE prestamos  SET estado_prestamo = 'inactivo'  WHERE id_libros = %s"
+                                        cursor.execute(sql, (libro_id,))
                                         conexion.commit()  # Confirma los cambios
                                         messagebox.showinfo("Éxito", "Préstamo eliminado con éxito.")
                                         grilla_prestamos.delete(selected_item)  # Eliminar la fila del Treeview
@@ -134,10 +135,10 @@ def Formulario_prestamos():
 
                 try:
         # Consulta para obtener el ID del préstamo basado en el nombre del cliente
-                        sql = "SELECT id_prestamo FROM prestamos WHERE dni = %s"
+                        sql = "SELECT p.id_prestamos s.dni FROM prestamos p WHERE s.dni socios s ON p.id_socios = s.id_socios = %s"
                         cursor.execute(sql, (dni,))
                         id= cursor.fetchone()  # Devuelve una fila
-                        sql = "DELETE FROM prestamos WHERE id = %s"
+                        sql = "UPDATE prestamos SET estado = 'inactivo' WHERE id_prestamos = %s"
                         cursor.execute(sql, (id,))
                         cursor.close()  # Confirma los cambios
                 except mysql.connector.Error as err:

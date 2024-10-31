@@ -85,7 +85,7 @@ def prestamos_interface():
             socio = nombre_completo_box.get().strip()
             dni = dni_entry.get().strip()
             isbn = isbn_entry.get().strip()
-            fecha_prestamo = devolucion_entry1.get_date()
+            fecha_prestamo = datetime.now()
             fecha_devolucion = devolucion_entry2.get_date()
             
             
