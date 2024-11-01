@@ -1,104 +1,48 @@
 import tkinter as tk
 from tkinter import messagebox
 
-def login_interface():
-    root = tk.Tk()
-    root.title("Iniciar Sesión - Biblioteca José H. Porto")
-    root.geometry("1366x768")
-    root.resizable(False, False)
+class Login:
+    def __init__(self, root, on_success):
+        self.root = root
+        self.window = tk.Toplevel(self.root)
+        self.window.title("Login")
+        self.on_success = on_success
+        self.window.geometry("1366x768")  # Tamaño expandido de la ventana
+        self.window.resizable(False, False)  # Hacer que la ventana no se pueda redimensionar
 
-    # Colores
-    fondo_color = "#ff5100"  
-    boton_color = "#d9b38c"   
-    boton_hover = "#ff8533"   
-    texto_color = "#231c00"   
+        # Fondo de color naranja sólido
+        self.window.configure(bg="#ff9933")  # Fondo naranja
 
-    root.config(bg=fondo_color)
+        # Encabezado
+        self.header = tk.Frame(self.window, bg="#4d2600", height=80)  # Marrón oscuro para contraste
+        self.header.place(relwidth=1, y=0)
+        tk.Label(self.header, text="Login", bg="#4d2600", fg="white", font=("Helvetica", 32, "bold")).pack(pady=15)
 
-    tk.Label(root, text="Iniciar Sesión", font=("Arial", 24), fg=texto_color, bg=fondo_color).pack(pady=30)
+        # Campos de entrada y etiquetas con posiciones y fuente actualizadas para la ventana grande
+        tk.Label(self.window, text="Usuario:", font=("Helvetica", 18, "bold"), bg="#ff9933").place(x=533, y=250)
+        self.username_entry = tk.Entry(self.window, font=("Helvetica", 18), width=30)
+        self.username_entry.place(x=533, y=290)
 
-    tk.Label(root, text="Usuario:", font=("Arial", 14), fg=texto_color, bg=fondo_color).pack(pady=10)
-    user_frame = tk.Frame(root, bg="#ffffff", bd=2, relief="solid")
-    user_frame.pack(pady=5)
-    user_entry = tk.Entry(user_frame, font=("Arial", 12), bg="white", width=30, bd=0)
-    user_entry.pack(pady=5)
+        tk.Label(self.window, text="Contraseña:", font=("Helvetica", 18, "bold"), bg="#ff9933").place(x=533, y=350)
+        self.password_entry = tk.Entry(self.window, show="*", font=("Helvetica", 18), width=30)
+        self.password_entry.place(x=533, y=390)
 
-    tk.Label(root, text="Contraseña:", font=("Arial", 14), fg=texto_color, bg=fondo_color).pack(pady=10)
-    pass_frame = tk.Frame(root, bg="#ffffff", bd=2, relief="solid")
-    pass_frame.pack(pady=5)
-    pass_entry = tk.Entry(pass_frame, show="*", font=("Arial", 12), bg="white", width=30, bd=0)
-    pass_entry.pack(pady=5)
+        # Botón de login con efectos de hover
+        login_button = tk.Button(
+            self.window, text="Ingresar", command=self.validate_login, font=("Helvetica", 18, "bold"),
+            bg="#4d2600", fg="white", activebackground="#7a4b2a", activeforeground="white", width=15
+        )
+        login_button.place(x=616, y=470)
 
-    show_pass_var = tk.IntVar()
-    def toggle_password():
-        pass_entry.config(show="" if show_pass_var.get() else "*")
-
-    tk.Checkbutton(root, text="Mostrar contraseña", variable=show_pass_var, command=toggle_password, bg=fondo_color, fg=texto_color).pack(pady=10)
-
-    def open_control_panel():
-        root.destroy()  # Cerrar la ventana de inicio de sesión
-        
-        panel = tk.Tk()
-        panel.title("Panel de Control")
-        panel.geometry("1366x768")
-        panel.resizable(False, False)
-
-        color_pastel = "#d9b38c"  
-        color_marron = "#231c00"  
-        color_naranja = "#ff5100"  
-
-        frame_lateral = tk.Frame(panel, bg=color_pastel, width=200)
-        frame_lateral.pack(side="left", fill="y")
-
-        frame_perfil = tk.Frame(frame_lateral, bg=color_marron, height=100)
-        frame_perfil.pack(fill="x")
-
-        nombre_perfil = tk.Label(frame_perfil, text="DIRECTOR", font=("Arial", 16, "bold"), bg=color_marron, fg="white")
-        nombre_perfil.pack(pady=10)
-
-        rol_perfil = tk.Label(frame_perfil, text="Admin", font=("Arial", 12), bg=color_marron, fg="white")
-        rol_perfil.pack()
-
-        items_menu = [("Socios", "👥"), ("Préstamos", "📚"), ("Libros", "📖")]
-        for item, icono in items_menu:
-            btn = tk.Button(frame_lateral, text=icono + " " + item, font=("Arial", 14), bg=color_pastel, bd=0, anchor="w", width=20)
-            btn.pack(fill="x", pady=10, padx=10)
-
-        frame_principal = tk.Frame(panel, bg=color_naranja)
-        frame_principal.pack(side="right", fill="both", expand=True)
-
-        label_bienvenida = tk.Label(frame_principal, text="Bienvenido a la Biblioteca José H. Porto", font=("Arial", 20), bg=color_naranja)
-        label_bienvenida.pack(pady=20)
-
-        panel.mainloop()
-
-    def iniciar_sesion():
-        user = user_entry.get()
-        password = pass_entry.get()
-
-        if not user or not password:
-            messagebox.showwarning("Advertencia", "Por favor, completa todos los campos")
-            return
-        
-        if user == "admin" and password == "1234":
-            messagebox.showinfo("Login", "Inicio de sesión exitoso")
-            open_control_panel()  # Abrir el panel de control
+    def validate_login(self):
+        if self.username_entry.get() == "admin" and self.password_entry.get() == "1234":
+            messagebox.showinfo("Login", "Ingreso exitoso")
+            self.on_success()
         else:
-            messagebox.showerror("Error", "Usuario o contraseña incorrectos")
+            messagebox.showerror("Login", "Usuario o contraseña incorrectos")
 
-    login_button = tk.Button(root, text="Iniciar Sesión", font=("Arial", 14), bg=boton_color, fg="black", width=20, height=2, command=iniciar_sesion, bd=2, relief="solid", highlightbackground="#231c00")
-    login_button.pack(pady=20)
+    def show(self):
+        self.window.deiconify()
 
-    def on_enter(e):
-        login_button.config(bg=boton_hover)
-
-    def on_leave(e):
-        login_button.config(bg=boton_color)
-
-    login_button.bind("<Enter>", on_enter)
-    login_button.bind("<Leave>", on_leave)
-
-    root.mainloop()
-
-if __name__ == "__main__":
-    login_interface()
+    def hide(self):
+        self.window.withdraw()
