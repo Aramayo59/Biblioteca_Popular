@@ -68,7 +68,7 @@ def Formulario():
    
    group_box=LabelFrame(base,text="Alta de Socio", padx=5,pady=5,bg='#ff9933')
             #group_box.config("1366x798")
-   group_box.grid(row=0,column=0,padx=5,pady=5,sticky=W)
+   group_box.grid(row=1,column=0,padx=5,pady=5,sticky=W)
             
    label_ID=Label(group_box,text=("ID:")).grid(row=0,column=0,padx=5,pady=5,sticky="w")
    text_ID=Entry(group_box)
@@ -116,7 +116,7 @@ def Formulario():
    Button(group_box,text="Guardar",command=guardar_registros,bg='#4d2600',foreground='white').grid(row=10,column=0,padx=5,pady=5)
             
    group_box=LabelFrame(base,text="Lista de Socios",padx=5,pady=5)
-   group_box.grid(row=0,column=1,padx=5,pady=5)
+   group_box.grid(row=0,column=0,padx=5,pady=5)
             
             #Treeview de la Grilla
             
@@ -162,7 +162,7 @@ def Formulario():
                        
    group_box=LabelFrame(base)
    group_box.config(bg='#4d2600')
-   group_box.grid(row=1,column=1)
+   group_box.grid(row=1,column=0)
    Button(group_box,text="Modificar",command=modificar_registros,bg='#4d2600',foreground='white').grid(row=0,column=0,padx=5,pady=5)
    Button(group_box,text="Volver",bg='#4d2600',foreground='white').grid(row=0,column=1,padx=5,pady=5)
  
