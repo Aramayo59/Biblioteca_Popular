@@ -2,19 +2,19 @@ import tkinter as tk
 from login import Login
 from dashboard import Dashboard
 from alta_libros import AltaLibros
-from ConexionDB import Conexion
+
 
 class MainApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.withdraw()  # Ocultar la ventana principal inicialmente
 
-        self.db_connection = Conexion.conexionBaseDatos()
+       
         self.show_login()
 
     def show_login(self):
         self.login_window = Login(self.root, self.on_login_success)
-        self.login_window.show()
+        
 
     def on_login_success(self):
         self.login_window.hide()
