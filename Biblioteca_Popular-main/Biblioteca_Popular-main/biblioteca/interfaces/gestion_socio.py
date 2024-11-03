@@ -48,8 +48,8 @@ def Formulario():
         
   global base
   global text_ID
-  global text_apellido
   global text_nombre
+  global text_apellido
   global text_dni
   global text_domicilio
   global text_ultimop
@@ -74,11 +74,11 @@ def Formulario():
    text_ID=Entry(group_box)
    #text_ID.grid(row=0,column=1,padx=5,pady=5)
             
-   label_apellido=Label(group_box,text=("Apellido:")).grid(row=1,column=0,padx=5,pady=5,sticky="w")
+   label_apellido=Label(group_box,text=("Nombre:")).grid(row=1,column=0,padx=5,pady=5,sticky="w")
    text_apellido=Entry(group_box)
    text_apellido.grid(row=1,column=1,padx=5,pady=5)
             
-   label_nombre=Label(group_box,text=("Nombre:")).grid(row=2,column=0,padx=5,pady=5,sticky="w")
+   label_nombre=Label(group_box,text=("Apellido:")).grid(row=2,column=0,padx=5,pady=5,sticky="w")
    text_nombre=Entry(group_box)
    text_nombre.grid(row=2,column=1,padx=5,pady=5)
             
