@@ -55,3 +55,5 @@ select * from socios;
 show columns from libros
 
 
+
+
