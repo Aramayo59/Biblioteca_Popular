@@ -1,7 +1,5 @@
 use bibliodb;
 
-
-
 create table libros(
 libro_id int primary key not null auto_increment,
 ISBN varchar(40) not null,
@@ -13,9 +11,6 @@ Editorial varchar (40) not null,
 Descripción varchar (40) not null
 
 );
-
-SELECT ID FROM libros WHERE condición;
-
 
 insert into libros(ISBN,Título,Categoría,Subcategoría,Autor,Editorial,Descripción)
 values ('978-987-3863-45-5','La Sombra de su secreto','Novela','Romantica','Cardoza Claudia','Vestalles','El amor surge entre dos personas con secretos');
@@ -38,9 +33,6 @@ where libro_id= 2;
 
 select * from libros;
 
-describe libros;
-
-
 
 select * from socios;
 
@@ -51,9 +43,3 @@ update socios set socios.apellido = 'pedraza', socios.nombre = 'pedro', socios.d
 socios.fechadepago = '13 noviembre', socios.teléfono = '0000000', socios.sexo = 'femenino' where socios.id= 1;
 
 select * from socios;
-
-show columns from libros
-
-
-
-
