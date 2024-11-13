@@ -1,3 +1,5 @@
+#gestion_socio.py
+
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
@@ -238,7 +240,7 @@ def seleccionregistro(event):
        text_ultimop.insert(0,values[5])
        text_telefono.delete(0,END)
        text_telefono.insert(0,values[6])
-       combo.set(0,values[7])
+       combo.set(values[7])
             
   except ValueError as error: 
       print("Error al seleccionar registro{}".format(error))      
