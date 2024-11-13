@@ -1,26 +1,24 @@
-USE bibliodb;
+use bibliodb;
 
-CREATE TABLE libros (
-    libro_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    ISBN VARCHAR(40) NOT NULL,
-    Título VARCHAR(40) NOT NULL,
-    Categoría VARCHAR(40) NOT NULL,
-    Subcategoría VARCHAR(40) NOT NULL,
-    Autor VARCHAR(40) NOT NULL,
-    Editorial VARCHAR(40) NOT NULL,
-    Descripción VARCHAR(100) NOT NULL
+create table libros(
+libro_id int primary key not null auto_increment,
+ISBN varchar(40) not null,
+Título varchar (40) not null,
+Categoría varchar (40) not null,
+Subcategoría varchar (40) not null,
+Autor varchar (40) not null,
+Editorial varchar (40) not null,
+Descripción varchar (40) not null
+
 );
 
+insert into libros(ISBN,Título,Categoría,Subcategoría,Autor,Editorial,Descripción)
+values ('978-987-3863-45-5','La Sombra de su secreto','Novela','Romantica','Cardoza Claudia','Vestalles','El amor surge entre dos personas con secretos');
 
-SELECT ID FROM libros WHERE condición;
-
-SHOW TABLES IN bibliodb;
-
-INSERT INTO libros (ISBN, Título, Categoría, Subcategoría, Autor, Editorial, Descripción)
-VALUES 
-('978-987-3863-45-5', 'La Sombra de su secreto', 'Novela', 'Romantica', 'Cardoza Claudia', 'Vestalles', 'El amor surge entre dos personas con secretos'),
-('978-84-16363-87-2', 'Sin límites', 'Novela', 'Novela Negra', 'Adler-Olsen Jussi', 'MAEVA', 'Oscuro asesinato no resuelto'),
-('978-987-8474-16-8', 'Robada', 'Novela', 'Thriller Psicológico', 'Stimson Tess', 'MOTUS', 'Atrapante libro ¿Quien se llevó a Lottie?');
+insert into libros(ISBN,Título,Categoría,Subcategoría,Autor,Editorial,Descripción)
+values ('978-84-16363-87-2','Sin límites','Novela','Novela Negra','Adler-Olsen Jussi','MAEVA','Oscuro asesinato no resuelto');
+insert into libros(ISBN,Título,Categoría,Subcategoría,Autor,Editorial,Descripción)
+values ('978-987-8474-16-8','Robada','Novela','Thriller Psicológico','Stimson Tess','MOTUS','Atrapante libro ¿Quien se llevó a Lottie?');
 
 delete from libros 
 where libro_id = 1;
@@ -35,9 +33,6 @@ where libro_id= 2;
 
 select * from libros;
 
-describe libros;
-
-
 
 select * from socios;
 
@@ -48,17 +43,3 @@ update socios set socios.apellido = 'pedraza', socios.nombre = 'pedro', socios.d
 socios.fechadepago = '13 noviembre', socios.teléfono = '0000000', socios.sexo = 'femenino' where socios.id= 1;
 
 select * from socios;
-
-show columns from libros
-
-
-
-
--- Consultar las tablas
-SELECT * FROM prestamos;
-SELECT * FROM libros;
-SELECT * FROM socios;
-SELECT * FROM editorial;
-SELECT * FROM autor;
-SELECT * FROM categoria;
-SELECT * FROM subcategoria;
